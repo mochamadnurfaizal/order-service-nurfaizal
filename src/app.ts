@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import { orderRouter } from "./modules/orders/order.routes";
 import cors from "cors";
+import { connectKafkaProducer } from "./modules/orders/order.service";
 
 const app: Application = express();
 app.use(cors());
@@ -13,6 +14,10 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/orders", orderRouter);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Order Service is running on port ${PORT}`);
+
+// Connect to Kafka before starting the server
+connectKafkaProducer().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Order Service is running on port ${PORT}`);
+  });
 });

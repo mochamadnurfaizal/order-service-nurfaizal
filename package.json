@@ -10,7 +10,7 @@
     "db:push": "npx drizzle-kit migrate",
     "dev": "nodemon ./src/app.ts",
     "build": "tsc -p .",
-  "start": "sh ./start.sh"
+    "start": "sh ./start.sh"
   },
   "keywords": [],
   "author": "",
@@ -22,12 +22,14 @@
     "drizzle-orm": "^0.44.5",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
+    "kafkajs": "^2.2.4",
     "opossum": "^9.0.0",
     "pg": "^8.16.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/kafkajs": "^1.8.2",
     "@types/node": "^24.6.0",
     "@types/opossum": "^8.1.9",
     "@types/pg": "^8.15.5",

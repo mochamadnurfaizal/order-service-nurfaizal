@@ -4,6 +4,22 @@ import { ordersTable, Order } from '../../db/schemas/orders';
 import axios from 'axios';
 import axiosRetry from "axios-retry";
 import CircuitBreaker from "opossum";
+import { Kafka } from "kafkajs";
+// Kafka setup
+const kafka = new Kafka({
+  clientId: "order-service",
+  brokers: [process.env.KAFKA_BROKER || "localhost:9092"],
+});
+
+let producer: any = null;
+
+export async function connectKafkaProducer() {
+  if (!producer) {
+    producer = kafka.producer();
+    await producer.connect();
+    console.log("🚀 Order Service connected to Kafka");
+  }
+}
 
 // Load env vars if not already loaded
 if (!process.env.API_BASE_URL || !process.env.API_TIMEOUT) {
@@ -71,7 +87,6 @@ breaker.on("close", () => console.log("Circuit CLOSED"));
 
 export const createOrder = async (order: Order): Promise<Order> => {
   try {
-
     //check for idempotency
     const idempotencyKey = order.idempotencyKey;
     const existingOrder = await db.query.ordersTable.findFirst({
@@ -89,6 +104,18 @@ export const createOrder = async (order: Order): Promise<Order> => {
 
     // Insert order into the database
     const [createdOrder] = await db.insert(ordersTable).values(order).returning();
+
+    // Produce Kafka message after order is created
+    if (producer) {
+      await producer.send({
+        topic: "order-events",
+        messages: [{ key: String(createdOrder.id), value: JSON.stringify(createdOrder) }],
+      });
+      console.log("📦 Order created and sent to Kafka:", createdOrder);
+    } else {
+      console.warn("Kafka producer not connected, order not sent to Kafka");
+    }
+
     return createdOrder;
   } catch (error) {
     console.error('Error creating order:', error);
