@@ -10,7 +10,7 @@
     "db:push": "npx drizzle-kit migrate",
     "dev": "nodemon ./src/app.ts",
     "build": "tsc -p .",
-    "start": "node dist/app.js"
+  "start": "sh ./start.sh"
   },
   "keywords": [],
   "author": "",
