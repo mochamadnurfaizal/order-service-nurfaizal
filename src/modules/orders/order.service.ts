@@ -5,10 +5,15 @@ import axios from 'axios';
 import axiosRetry from "axios-retry";
 import CircuitBreaker from "opossum";
 
-// Create an axios instance
+// Load env vars if not already loaded
+if (!process.env.API_BASE_URL || !process.env.API_TIMEOUT) {
+  require('dotenv').config();
+}
+
+// Create an axios instance using env vars
 const api = axios.create({
-  baseURL: "http://localhost:3001",
-  timeout: 2000, // 2 seconds timeout
+  baseURL: process.env.API_BASE_URL,
+  timeout: process.env.API_TIMEOUT ? parseInt(process.env.API_TIMEOUT, 10) : 2000,
 });
 
 // Add retry config
