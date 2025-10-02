@@ -1,0 +1,40 @@
+{
+  "name": "order-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:studio": "npx drizzle-kit studio",
+    "db:migrate": "npx drizzle-kit generate",
+    "db:push": "npx drizzle-kit migrate",
+    "dev": "nodemon ./src/app.ts",
+    "build": "tsc -p .",
+    "start": "node dist/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "axios-retry": "^4.5.0",
+    "cors": "^2.8.5",
+    "drizzle-orm": "^0.44.5",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "opossum": "^9.0.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.6.0",
+    "@types/opossum": "^8.1.9",
+    "@types/pg": "^8.15.5",
+    "dotenv": "^17.2.3",
+    "drizzle-kit": "^0.31.5",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

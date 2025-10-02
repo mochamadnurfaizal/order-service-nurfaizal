@@ -1,0 +1,17 @@
+
+GET http://localhost:3000/api/orders/
+
+### 
+
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+
+{
+  "idempotencyKey": "UK12345",
+  "productId": "P005",
+  "userId": "2e951f64-f477-44ae-9251-e1eab6f779b0",
+  "quantity": 2,
+  "price": 10,
+  "totalPrice": 20,
+  "status": "pending"
+}
