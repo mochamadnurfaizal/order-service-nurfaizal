@@ -31,10 +31,21 @@ axiosRetry(api, {
 
 async function validateUser(userId: string) {
   try {
-    await api.get(`/api/users/${userId}`);
-    return true
-  } catch (err) {
-    console.log(err)
+    const res = await api.get(`/api/users/${userId}`);
+    const data = res.data;
+    
+    if (
+      data &&
+      typeof data.id === 'string'
+    ) {
+      return true;
+    }
+    return false;
+  } catch (err: any) {
+    if (err.response && err.response.data && err.response.data.error === 'User not found') {
+      return false;
+    }
+    console.log(err);
     throw err;
   }
 }
