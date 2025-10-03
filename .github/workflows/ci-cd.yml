@@ -44,5 +44,11 @@ jobs:
       - name: Build
         run: npm run build
       - name: Deploy
+        env:
+          DOCKPLOY_WEBHOOK_URL: ${{ secrets.DOCKPLOY_WEBHOOK_URL }}
         run: |
-          npm run start
+          if [ -z "$DOCKPLOY_WEBHOOK_URL" ]; then
+            echo "Dockploy webhook URL not set!"
+            exit 1
+          fi
+          curl -X POST "$DOCKPLOY_WEBHOOK_URL"
