@@ -51,4 +51,4 @@ jobs:
             echo "Dockploy webhook URL not set!"
             exit 1
           fi
-          curl -X POST "$DOCKPLOY_WEBHOOK_URL"
+          curl -X POST -H "Content-Type: application/json" -d '{"branch": "${GITHUB_REF##*/}"}' "$DOCKPLOY_WEBHOOK_URL"
