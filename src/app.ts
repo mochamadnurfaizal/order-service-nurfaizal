@@ -35,8 +35,10 @@ app.use(async (req: Request, res: Response, next) => {
     await axios.post(lokiUrl, log, {
       headers: { "Content-Type": "application/json" }
     });
+    console.log(`[LOKI] Log sent for ${req.method} ${req.originalUrl}`);
   } catch (err) {
-    // Optionally log error, but don't block request
+  const errorMsg = (err && typeof err === 'object' && 'message' in err) ? (err as Error).message : String(err);
+  console.error(`[LOKI] Failed to send log for ${req.method} ${req.originalUrl}:`, errorMsg);
   }
   next();
 });
